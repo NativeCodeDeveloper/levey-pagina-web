@@ -171,11 +171,11 @@ function HoverFooter() {
       {/* Logo completo con brillo suave, cerrando el footer */}
       <div className="relative mt-12 flex justify-center">
         <Image
-          src="/levey.png"
+          src="/nativecode.png"
           width={2172}
           height={724}
           sizes="(max-width: 640px) 70vw, 320px"
-          alt="LeveyQC"
+          alt="NativeCode"
           className="h-auto w-56 sm:w-72 lg:w-80 [filter:drop-shadow(0_0_16px_rgba(255,255,255,0.22))_drop-shadow(0_0_42px_rgba(60,162,250,0.28))]"
         />
       </div>

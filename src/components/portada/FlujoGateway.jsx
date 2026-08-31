@@ -229,11 +229,14 @@ const gatewayFlowSource = `<!DOCTYPE html>
                 const dpr = window.devicePixelRatio || 1;
                 width = window.innerWidth;
                 height = window.innerHeight;
-                canvas.width = width * dpr;
-                canvas.height = height * dpr;
-                ctx.scale(dpr, dpr);
+                canvas.width = Math.max(1, width * dpr);
+                canvas.height = Math.max(1, height * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
                 paths.forEach((path) => {
-                    path.startY = Math.max(0, Math.min(height, path.startY));
+                    path.startY = Math.max(0, Math.min(
+                        height,
+                        path.startYRatio * height + path.jitter
+                    ));
                 });
             }
             window.addEventListener('resize', resize);
@@ -248,7 +251,9 @@ const gatewayFlowSource = `<!DOCTYPE html>
             for(let i = 0; i < numPaths; i++) {
                 paths.push({
                     isLeft: i % 2 === 0,
-                    startY: (i / numPaths) * height,
+                    startYRatio: i / numPaths,
+                    jitter: 0,
+                    startY: Math.max(0, Math.min(height, (i / numPaths) * height)),
                     particles: [{
                         t: Math.random(),
                         speed: 0.0015 + Math.random() * 0.002
@@ -294,9 +299,10 @@ const gatewayFlowSource = `<!DOCTYPE html>
                         p.t += p.speed;
                         if (p.t > 1) {
                             p.t = 0;
+                            path.jitter += (Math.random() - 0.5) * 10;
                             path.startY = Math.max(0, Math.min(
                                 height,
-                                path.startY + (Math.random() - 0.5) * 10
+                                path.startYRatio * height + path.jitter
                             ));
                         }
 
@@ -503,6 +509,15 @@ function FlujoGatewayFrame({
   style,
 }) {
   const iframeRef = useRef(null);
+  // El srcDoc se inyecta solo tras montar en el cliente: si el iframe carga
+  // durante el primer render de producción, el CSS aún no aplicó y el iframe
+  // mide 0px, colapsando todas las rutas del canvas en una sola línea.
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const requestedMode =
     mode ?? definition.defaultMode ?? GATEWAY_FLOW_DEFAULTS.mode;
   const automaticMode = useAutomaticMode(requestedMode === "auto");
@@ -588,7 +603,7 @@ function FlujoGatewayFrame({
       ref={iframeRef}
       className={className}
       title={definition.title}
-      srcDoc={source}
+      srcDoc={isMounted ? source : undefined}
       sandbox="allow-scripts"
       loading="eager"
       style={{
