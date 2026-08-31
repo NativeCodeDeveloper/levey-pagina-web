@@ -17,13 +17,20 @@ export default function ContenidoHero() {
         />
       </h1>
 
-      <p className="mt-6 max-w-xl text-pretty text-base font-semibold leading-7 text-white/60 sm:text-lg sm:leading-8">
-        Control de calidad para laboratorios clínicos.
-        <br />
-        Tu especialista en calidad, potenciado por inteligencia.
+      <p className="mt-8 flex items-start gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-white/40">
+        <span
+          aria-hidden="true"
+          className="mt-[7px] h-px w-8 shrink-0 bg-white/25 sm:w-10"
+        />
+        Control de calidad para laboratorios clínicos
       </p>
 
-      <div className="mt-8 flex w-full flex-col items-stretch justify-start gap-3 sm:w-auto sm:flex-row sm:items-center">
+      <p className="mt-5 max-w-xl text-balance text-2xl font-medium leading-8 tracking-[-0.02em] text-white sm:text-[28px] sm:leading-9">
+        Tu especialista en calidad,{" "}
+        <span className="text-white/55">potenciado por inteligencia.</span>
+      </p>
+
+      <div className="mt-10 flex w-full flex-col items-stretch justify-start gap-3 sm:w-auto sm:flex-row sm:items-center">
         <button
           type="button"
           className="group flex h-12 items-center justify-center gap-2 rounded-full bg-white px-7 text-base font-semibold text-[#111014] shadow-[0_14px_40px_rgba(0,0,0,0.28)] transition duration-300 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[0_18px_48px_rgba(0,0,0,0.36)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
