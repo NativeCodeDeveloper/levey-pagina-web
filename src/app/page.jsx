@@ -1,5 +1,8 @@
 import ContenidoHero from "@/components/portada/ContenidoHero";
+import Contenedor from "@/components/portada/Contenedor";
 import FranjaConfianza from "@/components/portada/FranjaConfianza";
+import FlujoGateway from "@/components/portada/FlujoGateway";
+import HoverFooter from "@/components/portada/HoverFooter";
 import Navegacion from "@/components/portada/Navegacion";
 import PostHero from "@/components/portada/PostHero";
 import SeccionAnalizadores from "@/components/portada/SeccionAnalizadores";
@@ -13,30 +16,45 @@ export default function Home() {
       <Navegacion />
 
       <main>
-        <section className="px-1 pt-1 sm:px-2 sm:pt-2">
-          <div className="relative isolate mx-auto flex min-h-[760px] w-full max-w-[1536px] overflow-hidden rounded-[2rem] border border-[#050507] bg-[#08080b] shadow-[0_30px_120px_rgba(0,0,0,0.55)] sm:min-h-[720px] lg:min-h-[760px] lg:rounded-[3rem]">
-            <VideoHero />
+        <section className="relative isolate flex min-h-svh items-center overflow-hidden bg-[#08080b]">
+          <VideoHero />
 
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-linear-to-b from-[#07070a]/45 via-[#07070a]/75 to-[#07070a]/98 lg:bg-linear-to-r lg:from-[#07070a]/98 lg:via-[#07070a]/80 lg:to-[#07070a]/25"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-[radial-gradient(circle_at_75%_35%,rgba(255,255,255,0.08),transparent_34%)]"
-            />
-            <div className="relative z-10 mx-auto flex min-h-[760px] w-full max-w-7xl items-center px-6 pb-12 pt-24 sm:min-h-[720px] sm:px-10 sm:pb-16 sm:pt-24 lg:min-h-[760px] lg:px-12 lg:pb-8 lg:pt-24">
-              <ContenidoHero />
-            </div>
-          </div>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-r from-[#07070a]/95 via-[#07070a]/70 to-[#07070a]/25"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_75%_35%,rgba(255,255,255,0.08),transparent_34%)]"
+          />
+
+          <Contenedor className="relative z-10 pb-20 pt-28">
+            <ContenidoHero />
+          </Contenedor>
         </section>
 
         <FranjaConfianza />
         <PostHero />
+
+        <section className="relative h-[70vh] min-h-[520px] w-full bg-black">
+          <FlujoGateway />
+          <div className="pointer-events-none absolute inset-x-0 top-[9%] z-10 flex flex-col items-center px-6 text-center">
+            <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+              Control de calidad centralizado
+            </h2>
+            <p className="mt-4 max-w-md text-pretty text-lg leading-8 text-white/50">
+              Libérate de los cuadernos y opera como un laboratorio de alta
+              gama.
+            </p>
+          </div>
+        </section>
+
         <SeccionPrecios />
         <SeccionAnalizadores />
         <SeccionIntegraciones />
       </main>
+
+      <HoverFooter />
     </div>
   );
 }

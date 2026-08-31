@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Contenedor from "./Contenedor";
 import {
   Check,
   ChartNoAxesColumnIncreasing,
@@ -69,8 +70,9 @@ function MarcaLeveyQC() {
 
 export default function Navegacion() {
   return (
-    <header className="fixed inset-x-0 top-0 z-30 flex justify-center px-4">
-      <div className="relative flex h-[72px] w-full max-w-[920px] items-center rounded-b-[28px] bg-[#050507] px-5 text-zinc-50 shadow-[0_22px_55px_rgba(0,0,0,0.3)] sm:px-8">
+    <header className="fixed inset-x-0 top-0 z-30">
+      <Contenedor>
+        <div className="relative flex h-[72px] w-full items-center rounded-b-[28px] bg-[#050507] px-5 text-zinc-50 shadow-[0_22px_55px_rgba(0,0,0,0.3)] sm:px-8">
         <AlaIzquierdaNotch />
         <AlaDerechaNotch />
 
@@ -152,6 +154,7 @@ export default function Navegacion() {
           </a>
         </nav>
       </div>
+      </Contenedor>
     </header>
   );
 }
