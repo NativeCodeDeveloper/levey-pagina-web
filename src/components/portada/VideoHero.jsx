@@ -21,11 +21,14 @@ export default function VideoHero() {
       return undefined;
     }
 
-    const reproducir = () => {
-      video.play().catch(() => {});
-    };
+    let reproduccionConfirmada = false;
 
     const confirmarInicio = () => {
+      if (reproduccionConfirmada || video.readyState < 2 || video.paused) {
+        return;
+      }
+
+      reproduccionConfirmada = true;
       marcarIniciado(true);
     };
 
@@ -33,9 +36,13 @@ export default function VideoHero() {
     // "playing"; "timeupdate" se sigue disparando durante toda la
     // reproducción, así que cubre ese caso.
     const alProgreso = () => {
-      if (!video.paused) {
-        marcarIniciado(true);
+      if (video.currentTime > 0) {
+        confirmarInicio();
       }
+    };
+
+    const reproducir = () => {
+      video.play().then(alProgreso).catch(() => {});
     };
 
     const alGesto = () => {
@@ -53,12 +60,6 @@ export default function VideoHero() {
     video.muted = true;
     video.playbackRate = VELOCIDAD_REPRODUCCION;
 
-    if (!video.paused) {
-      marcarIniciado(true);
-    }
-
-    reproducir();
-
     video.addEventListener("playing", confirmarInicio);
     video.addEventListener("timeupdate", alProgreso);
     window.addEventListener("pageshow", reproducir);
@@ -67,8 +68,10 @@ export default function VideoHero() {
       window.addEventListener(evento, alGesto);
     });
 
+    reproducir();
+
     const respaldoPendiente = window.setTimeout(() => {
-      if (video.paused) {
+      if (!reproduccionConfirmada) {
         marcarRespaldo(true);
       }
     }, 800);
@@ -87,22 +90,11 @@ export default function VideoHero() {
 
   return (
     <div aria-hidden="true" className="absolute inset-0 bg-black">
-      <img
-        src="/video-hero-poster.jpg"
-        alt=""
-        className={`pointer-events-none absolute inset-0 size-full object-cover transition-[opacity,scale] duration-[500ms] ease-out ${
-          iniciado || respaldo
-            ? "opacity-0"
-            : "animacion-entrada-fondo opacity-55"
-        }`}
-      />
-      {respaldo ? (
+      {!iniciado ? (
         <img
-          src="/hero-secuencia.webp"
+          src={respaldo ? "/hero-secuencia.webp" : "/video-hero-poster.jpg"}
           alt=""
-          className={`pointer-events-none absolute inset-0 size-full object-cover transition-opacity duration-[500ms] ease-out ${
-            iniciado ? "opacity-0" : "animacion-entrada-fondo opacity-55"
-          }`}
+          className="pointer-events-none absolute inset-0 size-full object-cover opacity-55"
         />
       ) : null}
       <video
@@ -117,8 +109,8 @@ export default function VideoHero() {
         disablePictureInPicture
         disableRemotePlayback
         preload="auto"
-        className={`pointer-events-none absolute inset-0 size-full object-cover transition-[opacity,scale] duration-[500ms] ease-out ${
-          iniciado ? "opacity-55 scale-100" : "opacity-0 motion-safe:scale-105"
+        className={`pointer-events-none absolute inset-0 size-full object-cover opacity-55 ${
+          iniciado ? "visible" : "invisible"
         }`}
       />
     </div>
